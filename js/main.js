@@ -115,8 +115,19 @@ function updateScrollAnimations() {
         // Applica scala normale quando centrato, altrimenti scala aumentata
         const profileScale = normalizedDistance > 0.1 ? 1.05 : 1.0;
 
-        profileImage.style.transform = `scale(${profileScale}) rotate(${profileRotation}deg)`;
-        profileImage.style.transition = 'transform 0.1s ease-out';
+        // Miglioramento per mobile: gestione più precisa del reset rotazione
+        const isMobile = window.innerWidth <= 768;
+        const threshold = isMobile ? 0.05 : 0.1;
+
+        // Su mobile, usa transizione più veloce e soglia più bassa per il reset
+        const transitionDuration = isMobile ? '0.05s' : '0.1s';
+
+        // Reset completo quando molto vicino al centro (specialmente importante su mobile)
+        const finalRotation = normalizedDistance < threshold ? 0 : profileRotation;
+        const finalScale = normalizedDistance < threshold ? 1.0 : profileScale;
+
+        profileImage.style.transform = `scale(${finalScale}) rotate(${finalRotation}deg)`;
+        profileImage.style.transition = `transform ${transitionDuration} ease-out`;
     }
 
     lastScrollY = scrollY;
