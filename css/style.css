@@ -123,7 +123,6 @@ body {
 /* ===== HEADER / HERO ===== */
 .hero {
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile browsers */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -272,19 +271,19 @@ body {
     }
 }
 
-/* Hover attivo su mobile per card individuali quando sono in viewport */
+/* Disattiva hover su mobile */
 @media (max-width: 768px) {
-    .project-card.mobile-hover-active {
-        transform: translateY(-8px);
-        background-color: #f8f8f8;
+    .project-card:hover {
+        transform: none;
+        background-color: #ffffff;
     }
 
-    .project-card.mobile-hover-active .project-overlay {
-        opacity: 1;
+    .project-card:hover .project-overlay {
+        opacity: 0;
     }
 
-    .project-card.mobile-hover-active .project-image img {
-        transform: scale(1.05);
+    .project-card:hover .project-image img {
+        transform: none;
     }
 }
 
@@ -292,6 +291,7 @@ body {
     position: relative;
     height: 250px;
     overflow: hidden;
+    border-bottom: 3px solid #000000;
 }
 
 .project-image img {
@@ -307,7 +307,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -363,7 +363,7 @@ body {
     .hero {
         padding: 24px 16px;
         height: 100vh;
-        height: 100dvh;
+        min-height: 100vh;
     }
 
     .profile-image {

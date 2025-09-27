@@ -14,54 +14,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// ===== MOBILE HOVER ACTIVATION =====
-// Intersection Observer per attivare un solo hover alla volta su mobile
-let currentActiveCard = null;
-let visibleCards = new Set();
-
-const mobileHoverObserver = new IntersectionObserver((entries) => {
-    // Aggiorna set delle card visibili
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            visibleCards.add(entry.target);
-        } else {
-            visibleCards.delete(entry.target);
-        }
-    });
-
-    // Trova la card più centrata tra quelle visibili
-    let mostCenteredCard = null;
-    let smallestDistance = Infinity;
-
-    visibleCards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const cardCenter = rect.top + rect.height / 2;
-        const screenCenter = window.innerHeight / 2;
-        const distance = Math.abs(cardCenter - screenCenter);
-
-        if (distance < smallestDistance) {
-            smallestDistance = distance;
-            mostCenteredCard = card;
-        }
-    });
-
-    // Aggiorna la card attiva solo se è diversa da quella corrente
-    if (mostCenteredCard !== currentActiveCard) {
-        // Rimuovi hover dalla card precedente
-        if (currentActiveCard) {
-            currentActiveCard.classList.remove('mobile-hover-active');
-        }
-
-        // Attiva hover sulla card più centrata
-        currentActiveCard = mostCenteredCard;
-        if (currentActiveCard) {
-            currentActiveCard.classList.add('mobile-hover-active');
-        }
-    }
-}, {
-    threshold: 0.3,
-    rootMargin: '0px 0px 0px 0px'
-});
 
 // ===== INIZIALIZZAZIONE AL CARICAMENTO =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -81,9 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             card.style.transitionDelay = `${index * 0.1}s`;
         }, 100);
-
-        // Osserva ogni card per l'attivazione hover mobile
-        mobileHoverObserver.observe(card);
     });
 });
 
@@ -140,11 +89,7 @@ function updateScrollAnimations() {
         const rotationMultiplier = (index + 1) * 45; // 45°, 90°, 135°, etc.
         const rotation = scrollProgress * 360 * (rotationMultiplier / 180);
 
-        // Controlla se siamo su mobile e applica la scala appropriata
-        const isMobile = window.innerWidth <= 768;
-        const scale = isMobile ? 0.7 : 1;
-
-        shape.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+        shape.style.transform = `rotate(${rotation}deg)`;
     });
 
     // Animazione immagine profilo
