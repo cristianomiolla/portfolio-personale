@@ -163,6 +163,7 @@ function throttle(func, limit) {
 
 // Ottimizzazione scroll per dispositivi mobili
 let ticking = false;
+let scrollEndTimer = null;
 
 function requestScrollUpdate() {
     // Aggiorna tutte le animazioni di scroll
@@ -170,10 +171,50 @@ function requestScrollUpdate() {
     ticking = false;
 }
 
+// Funzione per gestire la fine dello scroll su mobile
+function handleScrollEnd() {
+    const profileImage = document.querySelector('.profile-image');
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile && profileImage && window.scrollY <= 100) {
+        // Forza reset completo quando lo scroll si ferma vicino alla cima
+        profileImage.style.transform = 'scale(1.0) rotate(0deg)';
+        profileImage.style.transition = 'transform 0.3s ease-out';
+    }
+}
+
 window.addEventListener('scroll', () => {
     if (!ticking) {
         requestAnimationFrame(requestScrollUpdate);
         ticking = true;
+    }
+
+    // Su mobile, gestisci anche la fine dello scroll
+    if (window.innerWidth <= 768) {
+        clearTimeout(scrollEndTimer);
+        scrollEndTimer = setTimeout(handleScrollEnd, 150);
+    }
+});
+
+// Aggiungi supporto per scrollend su browser moderni
+if ('onscrollend' in window) {
+    window.addEventListener('scrollend', handleScrollEnd);
+}
+
+// Gestione touch events per mobile
+let touchStartY = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+});
+
+document.addEventListener('touchend', (e) => {
+    touchEndY = e.changedTouches[0].clientY;
+
+    // Se l'utente ha scrollato verso l'alto e siamo vicini alla cima
+    if (touchStartY < touchEndY && window.scrollY <= 100) {
+        setTimeout(handleScrollEnd, 100);
     }
 });
 
