@@ -110,7 +110,15 @@ function updateScrollAnimations() {
         // Applica rotazione basata sulla distanza dal centro
         // Quando è centrato (normalizedDistance = 0), rotazione = 0
         // Quando è lontano (normalizedDistance = 1), rotazione = 90°
-        const profileRotation = normalizedDistance * 90;
+        let profileRotation = normalizedDistance * 90;
+
+        // Applica una soglia per evitare micro-rotazioni e garantire ritorno a 0
+        if (normalizedDistance < 0.05) {
+            profileRotation = 0;
+        }
+
+        // Arrotonda la rotazione per evitare valori decimali imprecisi
+        profileRotation = Math.round(profileRotation * 100) / 100;
 
         profileImage.style.transform = `scale(1.05) rotate(${profileRotation}deg)`;
         profileImage.style.transition = 'transform 0.1s ease-out';
