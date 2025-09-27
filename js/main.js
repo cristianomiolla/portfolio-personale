@@ -112,9 +112,8 @@ function updateScrollAnimations() {
         // Quando è lontano (normalizedDistance = 1), rotazione = 90°
         const profileRotation = normalizedDistance * 90;
 
-        // Su mobile non applica scale, solo rotazione
-        const isMobile = window.innerWidth <= 768;
-        const profileScale = isMobile ? 1.0 : (normalizedDistance > 0.1 ? 1.05 : 1.0);
+        // Applica scala normale quando centrato, altrimenti scala aumentata
+        const profileScale = normalizedDistance > 0.1 ? 1.05 : 1.0;
 
         profileImage.style.transform = `scale(${profileScale}) rotate(${profileRotation}deg)`;
         profileImage.style.transition = 'transform 0.1s ease-out';
