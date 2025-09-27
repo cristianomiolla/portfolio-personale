@@ -60,57 +60,67 @@ projectCards.forEach(card => {
         // Aggiunge classe per animazioni CSS personalizzate
         this.classList.add('hovered');
 
-        // Animazione parallax leggera dell'immagine
-        if (image) {
-            image.style.transform = 'scale(1.1) rotate(1deg)';
-        }
     });
 
     card.addEventListener('mouseleave', function() {
         this.classList.remove('hovered');
 
-        if (image) {
-            image.style.transform = 'scale(1) rotate(0deg)';
-        }
     });
 
-    // Effetto di movimento del mouse per overlay
-    card.addEventListener('mousemove', function(e) {
-        if (overlay) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const xPercent = (x / rect.width - 0.5) * 20;
-            const yPercent = (y / rect.height - 0.5) * 20;
-
-            overlay.style.transform = `translate(${xPercent}px, ${yPercent}px)`;
-        }
-    });
-
-    card.addEventListener('mouseleave', function() {
-        if (overlay) {
-            overlay.style.transform = 'translate(0, 0)';
-        }
-    });
 });
 
-// ===== ANIMAZIONI FORME GEOMETRICHE =====
+// ===== ANIMAZIONI FORME GEOMETRICHE E PROFILO =====
 const shapes = document.querySelectorAll('.shape');
+const profileImage = document.querySelector('.profile-image');
+const heroSection = document.querySelector('.hero');
 
-// Movimento interattivo delle forme con il mouse
-document.addEventListener('mousemove', function(e) {
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
+// Rotazione sincronizzata con lo scroll
+let lastScrollY = 0;
 
+function updateScrollAnimations() {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollProgress = scrollY / maxScroll;
+
+    // Animazione forme geometriche
     shapes.forEach((shape, index) => {
-        const speed = (index + 1) * 0.5;
-        const x = (mouseX - 0.5) * speed;
-        const y = (mouseY - 0.5) * speed;
+        // Ogni forma ruota a velocità diverse
+        const rotationMultiplier = (index + 1) * 45; // 45°, 90°, 135°, etc.
+        const rotation = scrollProgress * 360 * (rotationMultiplier / 180);
 
-        shape.style.transform += ` translate(${x}px, ${y}px)`;
+        // Controlla se siamo su mobile e applica la scala appropriata
+        const isMobile = window.innerWidth <= 768;
+        const scale = isMobile ? 0.7 : 1;
+
+        shape.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
     });
-});
+
+    // Animazione immagine profilo
+    if (profileImage && heroSection) {
+        // Calcola quanto la sezione hero è centrata nello schermo
+        const heroRect = heroSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const heroCenter = heroRect.top + heroRect.height / 2;
+        const screenCenter = windowHeight / 2;
+
+        // Calcola la distanza dal centro (0 = perfettamente centrato)
+        const distanceFromCenter = Math.abs(heroCenter - screenCenter);
+        const maxDistance = windowHeight / 2;
+
+        // Normalizza la distanza (0 = centrato, 1 = massima distanza)
+        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+
+        // Applica rotazione basata sulla distanza dal centro
+        // Quando è centrato (normalizedDistance = 0), rotazione = 0
+        // Quando è lontano (normalizedDistance = 1), rotazione = 90°
+        const profileRotation = normalizedDistance * 90;
+
+        profileImage.style.transform = `scale(1.05) rotate(${profileRotation}deg)`;
+        profileImage.style.transition = 'transform 0.1s ease-out';
+    }
+
+    lastScrollY = scrollY;
+}
 
 // ===== PRESTAZIONI E OTTIMIZZAZIONI =====
 // Throttle per eventi di scroll e resize
@@ -130,14 +140,15 @@ function throttle(func, limit) {
 // Ottimizzazione scroll per dispositivi mobili
 let ticking = false;
 
-function updateScrollAnimations() {
-    // Aggiorna animazioni basate su scroll se necessario
+function requestScrollUpdate() {
+    // Aggiorna tutte le animazioni di scroll
+    updateScrollAnimations();
     ticking = false;
 }
 
 window.addEventListener('scroll', () => {
     if (!ticking) {
-        requestAnimationFrame(updateScrollAnimations);
+        requestAnimationFrame(requestScrollUpdate);
         ticking = true;
     }
 });
