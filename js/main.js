@@ -112,7 +112,10 @@ function updateScrollAnimations() {
         // Quando è lontano (normalizedDistance = 1), rotazione = 90°
         const profileRotation = normalizedDistance * 90;
 
-        profileImage.style.transform = `scale(1.05) rotate(${profileRotation}deg)`;
+        // Applica scala normale quando centrato, altrimenti scala aumentata
+        const profileScale = normalizedDistance > 0.1 ? 1.05 : 1.0;
+
+        profileImage.style.transform = `scale(${profileScale}) rotate(${profileRotation}deg)`;
         profileImage.style.transition = 'transform 0.1s ease-out';
     }
 
