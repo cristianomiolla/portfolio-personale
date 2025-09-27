@@ -94,40 +94,53 @@ function updateScrollAnimations() {
 
     // Animazione immagine profilo
     if (profileImage && heroSection) {
-        // Calcola quanto la sezione hero è centrata nello schermo
-        const heroRect = heroSection.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        const heroCenter = heroRect.top + heroRect.height / 2;
-        const screenCenter = windowHeight / 2;
-
-        // Calcola la distanza dal centro (0 = perfettamente centrato)
-        const distanceFromCenter = Math.abs(heroCenter - screenCenter);
-        const maxDistance = windowHeight / 2;
-
-        // Normalizza la distanza (0 = centrato, 1 = massima distanza)
-        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-
-        // Applica rotazione basata sulla distanza dal centro
-        // Quando è centrato (normalizedDistance = 0), rotazione = 0
-        // Quando è lontano (normalizedDistance = 1), rotazione = 90°
-        const profileRotation = normalizedDistance * 90;
-
-        // Applica scala normale quando centrato, altrimenti scala aumentata
-        const profileScale = normalizedDistance > 0.1 ? 1.05 : 1.0;
-
-        // Miglioramento per mobile: gestione più precisa del reset rotazione
         const isMobile = window.innerWidth <= 768;
-        const threshold = isMobile ? 0.05 : 0.1;
 
-        // Su mobile, usa transizione più veloce e soglia più bassa per il reset
-        const transitionDuration = isMobile ? '0.05s' : '0.1s';
+        // Su mobile, usa logica semplificata basata principalmente su scrollY
+        if (isMobile) {
+            // Se siamo molto vicini alla cima (primi 50px) forza reset completo
+            if (scrollY <= 50) {
+                profileImage.style.transform = 'scale(1.0) rotate(0deg)';
+                profileImage.style.transition = 'transform 0.3s ease-out';
+            } else {
+                // Calcola quanto la sezione hero è centrata nello schermo
+                const heroRect = heroSection.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const heroCenter = heroRect.top + heroRect.height / 2;
+                const screenCenter = windowHeight / 2;
 
-        // Reset completo quando molto vicino al centro (specialmente importante su mobile)
-        const finalRotation = normalizedDistance < threshold ? 0 : profileRotation;
-        const finalScale = normalizedDistance < threshold ? 1.0 : profileScale;
+                // Calcola la distanza dal centro (0 = perfettamente centrato)
+                const distanceFromCenter = Math.abs(heroCenter - screenCenter);
+                const maxDistance = windowHeight / 2;
 
-        profileImage.style.transform = `scale(${finalScale}) rotate(${finalRotation}deg)`;
-        profileImage.style.transition = `transform ${transitionDuration} ease-out`;
+                // Normalizza la distanza con soglia più generosa per mobile
+                const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+
+                // Reset più aggressivo quando vicino al centro
+                const threshold = 0.15;
+                const finalRotation = normalizedDistance < threshold ? 0 : normalizedDistance * 90;
+                const finalScale = normalizedDistance < threshold ? 1.0 : 1.05;
+
+                profileImage.style.transform = `scale(${finalScale}) rotate(${finalRotation}deg)`;
+                profileImage.style.transition = 'transform 0.2s ease-out';
+            }
+        } else {
+            // Logica originale per desktop
+            const heroRect = heroSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const heroCenter = heroRect.top + heroRect.height / 2;
+            const screenCenter = windowHeight / 2;
+
+            const distanceFromCenter = Math.abs(heroCenter - screenCenter);
+            const maxDistance = windowHeight / 2;
+            const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+
+            const profileRotation = normalizedDistance * 90;
+            const profileScale = normalizedDistance > 0.1 ? 1.05 : 1.0;
+
+            profileImage.style.transform = `scale(${profileScale}) rotate(${profileRotation}deg)`;
+            profileImage.style.transition = 'transform 0.1s ease-out';
+        }
     }
 
     lastScrollY = scrollY;
