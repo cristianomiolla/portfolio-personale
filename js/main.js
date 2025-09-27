@@ -96,30 +96,19 @@ function updateScrollAnimations() {
     if (profileImage && heroSection) {
         const isMobile = window.innerWidth <= 768;
 
-        // Su mobile, usa logica semplificata basata principalmente su scrollY
+        // Su mobile, usa logica semplificata basata direttamente sullo scroll
         if (isMobile) {
-            // Se siamo molto vicini alla cima (primi 50px) forza reset completo
-            if (scrollY <= 50) {
+            // Se siamo alla cima (primi 10px) forza reset completo
+            if (scrollY <= 10) {
                 profileImage.style.transform = 'scale(1.0) rotate(0deg)';
                 profileImage.style.transition = 'transform 0.3s ease-out';
             } else {
-                // Calcola quanto la sezione hero è centrata nello schermo
-                const heroRect = heroSection.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                const heroCenter = heroRect.top + heroRect.height / 2;
-                const screenCenter = windowHeight / 2;
+                // Rotazione proporzionale allo scroll dall'inizio
+                const maxRotationScroll = 300; // Rotazione massima raggiunta a 300px di scroll
+                const scrollProgress = Math.min(scrollY / maxRotationScroll, 1);
 
-                // Calcola la distanza dal centro (0 = perfettamente centrato)
-                const distanceFromCenter = Math.abs(heroCenter - screenCenter);
-                const maxDistance = windowHeight / 2;
-
-                // Normalizza la distanza con soglia più generosa per mobile
-                const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-
-                // Reset più aggressivo quando vicino al centro
-                const threshold = 0.15;
-                const finalRotation = normalizedDistance < threshold ? 0 : normalizedDistance * 90;
-                const finalScale = normalizedDistance < threshold ? 1.0 : 1.05;
+                const finalRotation = scrollProgress * 45; // Massimo 45 gradi su mobile
+                const finalScale = 1.0 + (scrollProgress * 0.05); // Scaling più leggero
 
                 profileImage.style.transform = `scale(${finalScale}) rotate(${finalRotation}deg)`;
                 profileImage.style.transition = 'transform 0.2s ease-out';
@@ -176,7 +165,7 @@ function handleScrollEnd() {
     const profileImage = document.querySelector('.profile-image');
     const isMobile = window.innerWidth <= 768;
 
-    if (isMobile && profileImage && window.scrollY <= 100) {
+    if (isMobile && profileImage && window.scrollY <= 20) {
         // Forza reset completo quando lo scroll si ferma vicino alla cima
         profileImage.style.transform = 'scale(1.0) rotate(0deg)';
         profileImage.style.transition = 'transform 0.3s ease-out';
@@ -213,7 +202,7 @@ document.addEventListener('touchend', (e) => {
     touchEndY = e.changedTouches[0].clientY;
 
     // Se l'utente ha scrollato verso l'alto e siamo vicini alla cima
-    if (touchStartY < touchEndY && window.scrollY <= 100) {
+    if (touchStartY < touchEndY && window.scrollY <= 20) {
         setTimeout(handleScrollEnd, 100);
     }
 });
