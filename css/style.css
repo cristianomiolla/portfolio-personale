@@ -182,12 +182,11 @@ body {
 /* ===== CONTATTI ===== */
 .contact {
     padding: 80px 0;
-    background-color: #ffffff;
 }
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 32px;
     max-width: 800px;
     margin: 0 auto;
@@ -205,7 +204,6 @@ body {
 }
 
 .contact-item:hover {
-    transform: translateY(-8px);
     background-color: #000000;
     color: #ffffff;
 }
@@ -266,9 +264,28 @@ body {
     transition: transform 0.2s ease;
 }
 
-.project-card:hover {
-    transform: translateY(-12px);
-    background-color: #f8f8f8;
+/* Hover per desktop */
+@media (min-width: 769px) {
+    .project-card:hover {
+        transform: translateY(-12px);
+        background-color: #f8f8f8;
+    }
+}
+
+/* Hover attivo su mobile per card individuali quando sono in viewport */
+@media (max-width: 768px) {
+    .project-card.mobile-hover-active {
+        transform: translateY(-8px);
+        background-color: #f8f8f8;
+    }
+
+    .project-card.mobile-hover-active .project-overlay {
+        opacity: 1;
+    }
+
+    .project-card.mobile-hover-active .project-image img {
+        transform: scale(1.05);
+    }
 }
 
 .project-image {

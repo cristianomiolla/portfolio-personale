@@ -5,7 +5,11 @@
       "Bash(npm run dev:*)",
       "Bash(start index.html)",
       "Bash(move:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "Bash(where gh)",
+      "Bash(ren:*)"
     ],
     "deny": [],
     "ask": []
