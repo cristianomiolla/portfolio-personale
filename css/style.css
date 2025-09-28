@@ -340,23 +340,16 @@ body {
     text-align: center;
 }
 
-.business-card-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 200px 60px;
-    min-height: 500px;
-}
-
 .business-card {
-    width: 85mm;
-    height: 55mm;
+    width: calc(85mm * 3);
+    height: calc(55mm * 3);
     background: white;
     display: flex;
-    transform: scale(3);
+    transform: scale(1);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     border-radius: 0;
     overflow: hidden;
+    margin: 48px auto 200px auto;
 }
 
 .business-card .left-section {
@@ -396,60 +389,60 @@ body {
 
 .business-card .right-section {
     width: 65%;
-    padding: 15px;
+    padding: 45px;
     position: relative;
 }
 
 .business-card .name {
-    margin-top: 15px;
-    margin-bottom: 16px;
+    margin-top: 45px;
+    margin-bottom: 48px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
 .business-card .name-first {
-    font-size: 14px;
+    font-size: 42px;
     font-weight: 400;
-    letter-spacing: 1px;
+    letter-spacing: 3px;
     line-height: 0.9;
     color: #666;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
 }
 
 .business-card .name-last {
-    font-size: 16px;
+    font-size: 48px;
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -3px;
     line-height: 0.9;
     color: black;
 }
 
 .business-card .card-contact-info {
-    margin-bottom: 14px;
+    margin-bottom: 42px;
 }
 
 .business-card .card-contact-item {
-    font-size: 8px;
+    font-size: 24px;
     font-weight: 600;
     color: black;
-    margin-bottom: 4px;
-    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 12px;
 }
 
 .business-card .card-contact-icon {
-    font-size: 8px;
+    font-size: 24px;
     color: black;
-    width: 10px;
+    width: 30px;
     text-align: center;
     filter: grayscale(100%) brightness(0);
 }
 
 .business-card .card-contact-item:nth-child(2) .card-contact-icon {
-    font-size: 9px;
+    font-size: 27px;
 }
 
 .business-card .card-contact-text {
@@ -462,21 +455,21 @@ body {
 }
 
 .business-card .card-cv-section {
-    margin-bottom: 12px;
+    margin-bottom: 36px;
     text-align: left;
     line-height: 1;
 }
 
 .business-card .card-cv-link {
     display: inline-block;
-    padding: 4px 8px;
+    padding: 12px 24px;
     background: black;
     color: white;
     text-decoration: none;
-    font-size: 7px;
+    font-size: 21px;
     font-weight: 600;
-    letter-spacing: 0.3px;
-    border: 2px solid black;
+    letter-spacing: 0.9px;
+    border: 6px solid black;
     border-radius: 0 !important;
     transition: all 0.3s ease;
     margin: 0;
@@ -494,16 +487,16 @@ body {
 
 .business-card .qr-section {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
+    bottom: 45px;
+    right: 45px;
 }
 
 .business-card .qr-placeholder {
-    width: 42px;
-    height: 42px;
+    width: 126px;
+    height: 126px;
     background: white url('../assets/images/qr%20code.png') no-repeat center;
     background-size: 110%;
-    padding: 2px;
+    padding: 6px;
     position: relative;
 }
 
@@ -511,21 +504,21 @@ body {
 .business-card .qr-placeholder::after {
     content: '';
     position: absolute;
-    width: 8px;
-    height: 8px;
-    border: 2px solid black;
+    width: 24px;
+    height: 24px;
+    border: 6px solid black;
 }
 
 .business-card .qr-placeholder::before {
-    top: -2px;
-    left: -2px;
+    top: -6px;
+    left: -6px;
     border-right: none;
     border-bottom: none;
 }
 
 .business-card .qr-placeholder::after {
-    bottom: -2px;
-    right: -2px;
+    bottom: -6px;
+    right: -6px;
     border-left: none;
     border-top: none;
 }
@@ -534,23 +527,133 @@ body {
 .business-card .qr-section::after {
     content: '';
     position: absolute;
-    width: 8px;
-    height: 8px;
-    border: 2px solid black;
+    width: 24px;
+    height: 24px;
+    border: 6px solid black;
 }
 
 .business-card .qr-section::before {
-    top: -2px;
-    right: -2px;
+    top: -6px;
+    right: -6px;
     border-left: none;
     border-bottom: none;
 }
 
 .business-card .qr-section::after {
-    bottom: -2px;
-    left: -2px;
+    bottom: -6px;
+    left: -6px;
     border-right: none;
     border-top: none;
+}
+
+/* ===== BUSINESS CARD RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .business-card-section {
+        padding: 60px 0;
+    }
+
+    .business-card {
+        width: calc(100vw - 32px);
+        height: calc((100vw - 32px) * 55mm / 85mm);
+        transform: scale(1);
+        margin: 32px auto 60px auto;
+    }
+
+    .business-card .right-section {
+        padding: 15px;
+    }
+
+    .business-card .name {
+        margin-top: 15px;
+        margin-bottom: 16px;
+    }
+
+    .business-card .name-first {
+        font-size: 14px;
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+    }
+
+    .business-card .name-last {
+        font-size: 16px;
+        letter-spacing: -1px;
+    }
+
+    .business-card .card-contact-info {
+        margin-bottom: 14px;
+    }
+
+    .business-card .card-contact-item {
+        font-size: 8px;
+        margin-bottom: 4px;
+        letter-spacing: 0.5px;
+        gap: 4px;
+    }
+
+    .business-card .card-contact-icon {
+        font-size: 8px;
+        width: 10px;
+    }
+
+    .business-card .card-contact-item:nth-child(2) .card-contact-icon {
+        font-size: 9px;
+    }
+
+    .business-card .card-cv-section {
+        margin-bottom: 12px;
+    }
+
+    .business-card .card-cv-link {
+        padding: 4px 8px;
+        font-size: 7px;
+        letter-spacing: 0.3px;
+        border: 2px solid black;
+    }
+
+    .business-card .qr-section {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .business-card .qr-placeholder {
+        width: 42px;
+        height: 42px;
+        padding: 2px;
+    }
+
+    .business-card .qr-placeholder::before,
+    .business-card .qr-placeholder::after {
+        width: 8px;
+        height: 8px;
+        border: 2px solid black;
+    }
+
+    .business-card .qr-placeholder::before {
+        top: -2px;
+        left: -2px;
+    }
+
+    .business-card .qr-placeholder::after {
+        bottom: -2px;
+        right: -2px;
+    }
+
+    .business-card .qr-section::before,
+    .business-card .qr-section::after {
+        width: 8px;
+        height: 8px;
+        border: 2px solid black;
+    }
+
+    .business-card .qr-section::before {
+        top: -2px;
+        right: -2px;
+    }
+
+    .business-card .qr-section::after {
+        bottom: -2px;
+        left: -2px;
+    }
 }
 
 
