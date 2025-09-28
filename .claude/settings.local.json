@@ -10,7 +10,8 @@
       "Bash(gh repo create:*)",
       "Bash(where gh)",
       "Bash(ren:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
