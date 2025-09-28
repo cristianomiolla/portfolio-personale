@@ -596,8 +596,8 @@ body {
     }
 
     .business-card .name {
-        margin-top: 15px;
-        margin-bottom: 16px;
+        margin-top: 18px;
+        margin-bottom: 18px;
     }
 
     .business-card .name-first {
@@ -612,7 +612,7 @@ body {
     }
 
     .business-card .card-contact-info {
-        margin-bottom: 14px;
+        margin-bottom: 18px;
     }
 
     .business-card .card-contact-item {
@@ -632,7 +632,7 @@ body {
     }
 
     .business-card .card-cv-section {
-        margin-bottom: 12px;
+        margin-bottom: 20px;
     }
 
     .business-card .card-cv-link {
