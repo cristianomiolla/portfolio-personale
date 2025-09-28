@@ -37,6 +37,9 @@
     <link rel="icon" type="image/jpeg" href="assets/images/profile.jpg">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <!-- Structured Data per Google -->
     <script type="application/ld+json">
@@ -85,22 +88,41 @@
         </div>
     </header>
 
-    <!-- Sezione Contatti -->
-    <section class="contact">
+    <!-- Sezione Business Card -->
+    <section class="business-card-section">
         <div class="container">
-            <h2 class="section-title">Contatti</h2>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <span class="contact-label">Telefono</span>
-                    <span class="contact-value">+39 3453548555</span>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-label">Email</span>
-                    <a href="mailto:cristiano.miolla@gmail.com" class="contact-value contact-link">cristiano.miolla@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-label">Curriculum</span>
-                    <a href="assets/cv.pdf" target="_blank" rel="noopener" class="contact-value contact-link">Apri CV</a>
+            <h2 class="section-title">Profilo</h2>
+            <div class="business-card-wrapper">
+                <div class="business-card">
+                    <div class="left-section">
+                        <canvas id="model-canvas"></canvas>
+                    </div>
+
+                    <div class="right-section">
+                        <h1 class="name">
+                            <span class="name-first">CRISTIANO</span>
+                            <span class="name-last">MIOLLA</span>
+                        </h1>
+
+                        <div class="card-contact-info">
+                            <div class="card-contact-item">
+                                <span class="card-contact-icon">📞</span>
+                                <span class="card-contact-text">+39 345 35 48 555</span>
+                            </div>
+                            <div class="card-contact-item">
+                                <span class="card-contact-icon">✉</span>
+                                <span class="card-contact-text">cristiano.miolla@gmail.com</span>
+                            </div>
+                        </div>
+
+                        <div class="card-cv-section">
+                            <a href="assets/cv.pdf" target="_blank" class="card-cv-link">Apri CV</a>
+                        </div>
+
+                        <div class="qr-section">
+                            <div class="qr-placeholder"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,5 +165,6 @@
     </section>
 
     <script src="js/main.js"></script>
+    <script src="js/business-card.js"></script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="business-card">
+        <div class="left-section">
+            <canvas id="model-canvas"></canvas>
+        </div>
+
+        <div class="right-section">
+            <h1 class="name">
+                <span class="name-first">CRISTIANO</span>
+                <span class="name-last">MIOLLA</span>
+            </h1>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-text">+39 345 35 48 555</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉</span>
+                    <span class="contact-text">cristiano.miolla@gmail.com</span>
+                </div>
+            </div>
+
+            <div class="cv-section">
+                <a href="cv.pdf" target="_blank" class="cv-link">Apri CV</a>
+            </div>
+
+            <div class="qr-section">
+                <div class="qr-placeholder"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
