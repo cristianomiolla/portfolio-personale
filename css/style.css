@@ -329,18 +329,20 @@ body {
 }
 
 .project-content {
-    padding: 24px;
+    padding: 26px;
+    background: #ffffff;
 }
 
 .project-title {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 12px;
     color: #000000;
+    text-transform: uppercase;
 }
 
 .project-description {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     color: #666666;
     line-height: 1.6;
 }
@@ -536,18 +538,18 @@ body {
     font-size: 24px;
     font-weight: 600;
     letter-spacing: 1px;
-    border: 6px solid black;
-    border-radius: 0 !important;
+    border: none;
     transition: all 0.3s ease;
     margin: 0;
     line-height: 1;
     vertical-align: top;
+    position: relative;
+    clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
 }
 
 .business-card .card-cv-link:hover {
-    background: white;
-    color: black;
-    border-radius: 0 !important;
+    background: #333333;
+    transform: scale(1.05);
 }
 
 
@@ -611,6 +613,116 @@ body {
     left: -6px;
     border-right: none;
     border-top: none;
+}
+
+/* ===== COMPETENZE SECTION ===== */
+.competenze {
+    padding: 80px 0;
+}
+
+.competenze-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.competenza-block {
+    border: 3px solid #000000;
+    padding: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        #ffffff,
+        #ffffff 2px,
+        #f8f8f8 2px,
+        #f8f8f8 4px
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.competenza-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 16px 60px 16px 28px;
+    color: #ffffff;
+    background: #000000;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.competenza-title::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border: 3px solid #ffffff;
+    clip-path: polygon(
+        0% 0%, 30% 0%, 30% 30%, 100% 30%, 100% 0%, 100% 100%,
+        70% 100%, 70% 70%, 0% 70%, 0% 100%
+    );
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 26px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 12px 12px 0;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+    cursor: default;
+    position: relative;
+    clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
+    text-decoration: none;
+}
+
+a.tag {
+    cursor: pointer;
+}
+
+.tag:hover {
+    background-color: #333333;
+    transform: scale(1.05);
+}
+
+/* Responsive Competenze */
+@media (max-width: 768px) {
+    .competenze {
+        padding: 60px 0;
+    }
+
+    .competenze-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .competenza-title::after {
+        right: 16px;
+    }
+
+    .tag-container {
+        padding: 20px;
+    }
+
+    .tag {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
 }
 
 /* ===== BUSINESS CARD RESPONSIVE ===== */
@@ -731,7 +843,6 @@ body {
         padding: 6px 20px;
         font-size: 10px;
         letter-spacing: 0.5px;
-        border: 3px solid black;
     }
 }
 
@@ -772,7 +883,6 @@ body {
         padding: 4px 16px;
         font-size: 7px;
         letter-spacing: 0.3px;
-        border: 2px solid black;
     }
 }
 
