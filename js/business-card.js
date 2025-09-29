@@ -24,7 +24,7 @@ function initBusinessCard() {
     });
 
     // DPI support ottimizzato
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const pixelRatio = window.devicePixelRatio || 1;
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 1);
@@ -187,7 +187,7 @@ function onBusinessCardResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
 
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const pixelRatio = window.devicePixelRatio || 1;
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
