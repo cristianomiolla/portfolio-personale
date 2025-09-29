@@ -414,6 +414,24 @@ body {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform;
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        95% 8%,
+        100% 15%,
+        92% 22%,
+        97% 28%,
+        88% 38%,
+        94% 45%,
+        90% 52%,
+        96% 60%,
+        89% 68%,
+        95% 77%,
+        91% 85%,
+        97% 93%,
+        93% 100%,
+        0% 100%
+    );
 }
 
 .business-card #model-canvas {
