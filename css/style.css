@@ -5,6 +5,26 @@
     box-sizing: border-box;
 }
 
+/* ===== LOADING SCREEN ===== */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loading-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -59,23 +79,27 @@ body {
 .shape-clock {
     width: 130px;
     height: 130px;
-    top: 40%;
-    left: 18%;
+    top: 50%;
+    right: 12%;
     background-image: url('../assets/svg/orologio.svg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
     background-color: transparent;
-    /* Clock shape below PC */
+    /* Clock shape moved to right */
 }
 
 .shape-plus {
-    width: 90px;
-    height: 90px;
-    top: 45%;
-    right: 12%;
-    /* Plus/croce perfetta */
-    clip-path: polygon(37.5% 0%, 62.5% 0%, 62.5% 37.5%, 100% 37.5%, 100% 62.5%, 62.5% 62.5%, 62.5% 100%, 37.5% 100%, 37.5% 62.5%, 0% 62.5%, 0% 37.5%, 37.5% 37.5%);
+    width: 180px;
+    height: 180px;
+    top: 40%;
+    left: 12%;
+    background-image: url('../assets/svg/tuta.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-color: transparent;
+    /* Tuta SVG shape moved to left */
 }
 
 .shape-flower {
@@ -480,6 +504,17 @@ body {
 .business-card .card-contact-text {
     flex: 1;
     text-align: left;
+    text-decoration: none;
+    color: inherit;
+}
+
+.business-card .card-contact-text:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+.business-card .card-contact-item:first-child .card-contact-text:hover {
+    text-decoration: none;
 }
 
 .business-card .card-contact-item:last-child {
@@ -494,7 +529,7 @@ body {
 
 .business-card .card-cv-link {
     display: inline-block;
-    padding: 15px 40px;
+    padding: 15px 50px;
     background: black;
     color: white;
     text-decoration: none;
@@ -579,6 +614,7 @@ body {
 }
 
 /* ===== BUSINESS CARD RESPONSIVE ===== */
+/* Base mobile styles (shared) */
 @media (max-width: 768px) {
     .business-card-section {
         padding: 60px 0;
@@ -591,55 +627,17 @@ body {
         margin: 32px auto 0 auto;
     }
 
-    .business-card .right-section {
-        padding: 15px;
-    }
-
     .business-card .name {
         margin-top: 18px;
         margin-bottom: 18px;
-    }
-
-    .business-card .name-first {
-        font-size: 14px;
-        letter-spacing: 1px;
-        margin-bottom: 2px;
-    }
-
-    .business-card .name-last {
-        font-size: 16px;
-        letter-spacing: -1px;
     }
 
     .business-card .card-contact-info {
         margin-bottom: 18px;
     }
 
-    .business-card .card-contact-item {
-        font-size: 8px;
-        margin-bottom: 4px;
-        letter-spacing: 0.5px;
-        gap: 4px;
-    }
-
-    .business-card .card-contact-icon {
-        font-size: 8px;
-        width: 10px;
-    }
-
-    .business-card .card-contact-item:nth-child(2) .card-contact-icon {
-        font-size: 8px;
-    }
-
     .business-card .card-cv-section {
         margin-bottom: 20px;
-    }
-
-    .business-card .card-cv-link {
-        padding: 4px 8px;
-        font-size: 7px;
-        letter-spacing: 0.3px;
-        border: 2px solid black;
     }
 
     .business-card .qr-section {
@@ -693,6 +691,88 @@ body {
         left: -2px;
         border-right: none;
         border-top: none;
+    }
+}
+
+/* Medium mobile devices (375px to 768px) */
+@media (min-width: 375px) and (max-width: 768px) {
+    .business-card .right-section {
+        padding: 20px;
+    }
+
+    .business-card .name-first {
+        font-size: 18px;
+        letter-spacing: 1.5px;
+        margin-bottom: 3px;
+    }
+
+    .business-card .name-last {
+        font-size: 20px;
+        letter-spacing: -1px;
+    }
+
+    .business-card .card-contact-item {
+        font-size: 12px;
+        margin-bottom: 6px;
+        letter-spacing: 0.8px;
+        gap: 6px;
+    }
+
+    .business-card .card-contact-icon {
+        font-size: 12px;
+        width: 14px;
+    }
+
+    .business-card .card-contact-item:nth-child(2) .card-contact-icon {
+        font-size: 12px;
+    }
+
+    .business-card .card-cv-link {
+        padding: 6px 20px;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+        border: 3px solid black;
+    }
+}
+
+/* Small mobile devices (max 374px) */
+@media (max-width: 374px) {
+    .business-card .right-section {
+        padding: 15px;
+    }
+
+    .business-card .name-first {
+        font-size: 14px;
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+    }
+
+    .business-card .name-last {
+        font-size: 16px;
+        letter-spacing: -1px;
+    }
+
+    .business-card .card-contact-item {
+        font-size: 8px;
+        margin-bottom: 4px;
+        letter-spacing: 0.5px;
+        gap: 4px;
+    }
+
+    .business-card .card-contact-icon {
+        font-size: 8px;
+        width: 10px;
+    }
+
+    .business-card .card-contact-item:nth-child(2) .card-contact-icon {
+        font-size: 8px;
+    }
+
+    .business-card .card-cv-link {
+        padding: 4px 16px;
+        font-size: 7px;
+        letter-spacing: 0.3px;
+        border: 2px solid black;
     }
 }
 
