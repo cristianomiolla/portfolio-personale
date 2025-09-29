@@ -35,11 +35,18 @@
     <meta property="og:site_name" content="Cristiano Miolla Curriculum">
 
     <link rel="icon" type="image/jpeg" href="assets/images/profile.jpg">
+
+    <!-- Preconnect per risorse esterne -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
     <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/square.js"></script>
 
@@ -94,7 +101,7 @@
     <header class="hero">
         <div class="hero-content">
             <div class="profile-container">
-                <img src="assets/images/profile.jpg" alt="Cristiano Miolla" class="profile-image">
+                <img src="assets/images/profile.jpg" alt="Cristiano Miolla" class="profile-image" loading="eager">
             </div>
             <h1 class="name">Cristiano Miolla</h1>
             <p class="bio">
@@ -185,7 +192,7 @@
             <div class="portfolio-grid">
                 <article class="project-card">
                     <div class="project-image">
-                        <img src="assets/images/portfolio/progetto1.png" alt="Progetto 1">
+                        <img src="assets/images/portfolio/progetto1.png" alt="Progetto 1" loading="lazy">
                         <div class="project-overlay">
                             <a href="http://www.strush.it" target="_blank" rel="noopener" class="project-link">Vedi Progetto</a>
                         </div>
@@ -198,7 +205,7 @@
 
                 <article class="project-card">
                     <div class="project-image">
-                        <img src="assets/images/portfolio/progetto2.png" alt="Progetto 2">
+                        <img src="assets/images/portfolio/progetto2.png" alt="Progetto 2" loading="lazy">
                         <div class="project-overlay">
                             <a href="https://cristianomiolla.github.io/Flink/" target="_blank" rel="noopener" class="project-link">Vedi Progetto</a>
                         </div>

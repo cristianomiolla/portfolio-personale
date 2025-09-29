@@ -20,19 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Applica animazioni fade-in a sezioni e card
     const animatedElements = document.querySelectorAll('.business-card-section, .portfolio, .project-card');
 
-    animatedElements.forEach(el => {
+    animatedElements.forEach((el, index) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        // Delay per project cards
+        if (el.classList.contains('project-card')) {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        }
         observer.observe(el);
-    });
-
-    // Animazione ritardata per le card del portfolio
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card, index) => {
-        setTimeout(() => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-        }, 100);
     });
 });
 
@@ -50,25 +46,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// ===== EFFETTI HOVER AVANZATI =====
-const projectCards = document.querySelectorAll('.project-card');
-
-projectCards.forEach(card => {
-    const image = card.querySelector('.project-image img');
-    const overlay = card.querySelector('.project-overlay');
-
-    card.addEventListener('mouseenter', function() {
-        // Aggiunge classe per animazioni CSS personalizzate
-        this.classList.add('hovered');
-
+// ===== EFFETTI HOVER AVANZATI (solo desktop) =====
+if (window.matchMedia('(min-width: 769px)').matches) {
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('hovered');
+        });
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('hovered');
+        });
     });
-
-    card.addEventListener('mouseleave', function() {
-        this.classList.remove('hovered');
-
-    });
-
-});
+}
 
 // ===== ANIMAZIONI FORME GEOMETRICHE E PROFILO =====
 const shapes = document.querySelectorAll('.shape');
@@ -210,13 +199,8 @@ document.addEventListener('touchend', (e) => {
 // ===== GESTIONE ERRORI CARICAMENTO IMMAGINI =====
 document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', function() {
-        // Sostituisce immagini mancanti con placeholder
         this.style.backgroundColor = '#f0f0f0';
-        this.style.display = 'flex';
-        this.style.alignItems = 'center';
-        this.style.justifyContent = 'center';
-        this.innerHTML = '<span style="color: #999; font-size: 14px;">Immagine non disponibile</span>';
-    });
+    }, { once: true });
 });
 
 // ===== ACCESSIBILITÀ =====

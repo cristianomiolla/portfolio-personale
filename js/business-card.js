@@ -15,59 +15,39 @@ function initBusinessCard() {
     camera = new THREE.PerspectiveCamera(50, container.offsetWidth / container.offsetHeight, 0.1, 1000);
     camera.position.set(0, 0.8, 3); // Camera positioned for balanced front view
 
-    // Renderer setup - Ultra maximum quality configuration
+    // Renderer setup - Ottimizzato per performance
     renderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
         alpha: true,
-        powerPreference: "high-performance",
-        stencil: true, // Enable for advanced effects
-        depth: true,
-        logarithmicDepthBuffer: true, // Better depth precision
-        preserveDrawingBuffer: true, // Better quality
-        premultipliedAlpha: false,
-        precision: 'highp' // High precision
+        powerPreference: "high-performance"
     });
 
-    // Maximum quality DPI support
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 4); // Up to 4x for maximum quality
+    // DPI support ottimizzato
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(pixelRatio);
-
-    // Render at 2.5x resolution for maximum visual quality
-    const renderWidth = container.offsetWidth * 2.5;
-    const renderHeight = container.offsetHeight * 2.5;
-    renderer.setSize(renderWidth, renderHeight, false);
-    canvas.style.width = container.offsetWidth + 'px';
-    canvas.style.height = container.offsetHeight + 'px';
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 1);
 
-    // Maximum quality rendering settings
+    // Rendering settings ottimizzati
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.shadowMap.autoUpdate = true; // Enable auto-update for better quality
+    renderer.shadowMap.autoUpdate = false; // Aggiornamento manuale per performance
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3; // Slightly increased exposure
+    renderer.toneMappingExposure = 1.3;
     renderer.physicallyCorrectLights = true;
-    renderer.gammaFactor = 2.2;
-
-    // Additional quality enhancements
-    renderer.sortObjects = true;
-    renderer.autoClear = true;
-    renderer.autoClearColor = true;
-    renderer.autoClearDepth = true;
-    renderer.autoClearStencil = true;
 
     // Advanced cinematic lighting with enhanced shadows
     const ambientLight = new THREE.AmbientLight(0x2c3e50, 0.08); // Reduced ambient for deeper shadows
     scene.add(ambientLight);
 
-    // Main key light with maximum quality shadows
+    // Main key light con shadow ottimizzate
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.5);
     keyLight.position.set(6, 10, 8);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 4096;  // Ultra high quality shadows
-    keyLight.shadow.mapSize.height = 4096;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
     keyLight.shadow.camera.near = 0.1;
     keyLight.shadow.camera.far = 100;
     keyLight.shadow.camera.left = -15;
@@ -76,7 +56,6 @@ function initBusinessCard() {
     keyLight.shadow.camera.bottom = -15;
     keyLight.shadow.bias = -0.0001;
     keyLight.shadow.normalBias = 0.02;
-    keyLight.shadow.radius = 8; // Maximum soft shadow quality
     scene.add(keyLight);
 
     // Cool fill light with area-like quality (reduced for more shadows)
@@ -102,25 +81,13 @@ function initBusinessCard() {
     rimLight2.position.set(4, -2, -4);
     scene.add(rimLight2);
 
-    // Ultra quality point lights with enhanced shadows
+    // Point lights ottimizzate (senza shadow per performance)
     pointLight1 = new THREE.PointLight(0xffd54f, 2.2, 25, 2);
     pointLight1.position.set(3, 5, 2);
-    pointLight1.castShadow = true;
-    pointLight1.shadow.mapSize.width = 2048; // High quality shadows
-    pointLight1.shadow.mapSize.height = 2048;
-    pointLight1.shadow.bias = -0.0001;
-    pointLight1.shadow.normalBias = 0.02;
-    pointLight1.shadow.radius = 6;
     scene.add(pointLight1);
 
     pointLight2 = new THREE.PointLight(0x9c27b0, 1.8, 18, 1.8);
     pointLight2.position.set(-3, 2, 3);
-    pointLight2.castShadow = true; // Enable shadows for better quality
-    pointLight2.shadow.mapSize.width = 1024;
-    pointLight2.shadow.mapSize.height = 1024;
-    pointLight2.shadow.bias = -0.0001;
-    pointLight2.shadow.normalBias = 0.02;
-    pointLight2.shadow.radius = 4;
     scene.add(pointLight2);
 
     // Animated accent lights with more sophistication
@@ -146,79 +113,23 @@ function initBusinessCard() {
                     child.receiveShadow = true;
                     child.frustumCulled = false; // Disable frustum culling for better quality
 
-                    // Ultra enhance material properties
+                    // Ottimizzazione materiali
                     if (child.material) {
-                        // Enhanced material properties
-                        child.material.envMapIntensity = 1.2;
                         child.material.needsUpdate = true;
 
-                        // Enable high-quality material features
                         if (child.material.isMeshStandardMaterial || child.material.isMeshPhysicalMaterial) {
                             child.material.roughness = child.material.roughness || 0.4;
                             child.material.metalness = child.material.metalness || 0.1;
                         }
 
-                        // Maximum anisotropic filtering for all texture maps
-                        const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+                        // Anisotropic filtering ottimizzato
+                        const anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 4);
 
-                        // Enhance diffuse/albedo maps
                         if (child.material.map) {
-                            child.material.map.anisotropy = maxAnisotropy;
-                            child.material.map.generateMipmaps = true;
-                            child.material.map.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.map.magFilter = THREE.LinearFilter;
-                            child.material.map.wrapS = child.material.map.wrapT = THREE.RepeatWrapping;
-                            child.material.map.flipY = false;
+                            child.material.map.anisotropy = anisotropy;
                         }
-
-                        // Enhance normal maps
                         if (child.material.normalMap) {
-                            child.material.normalMap.anisotropy = maxAnisotropy;
-                            child.material.normalMap.generateMipmaps = true;
-                            child.material.normalMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.normalMap.magFilter = THREE.LinearFilter;
-                            child.material.normalScale = child.material.normalScale || new THREE.Vector2(1, 1);
-                        }
-
-                        // Enhance roughness maps
-                        if (child.material.roughnessMap) {
-                            child.material.roughnessMap.anisotropy = maxAnisotropy;
-                            child.material.roughnessMap.generateMipmaps = true;
-                            child.material.roughnessMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.roughnessMap.magFilter = THREE.LinearFilter;
-                        }
-
-                        // Enhance metalness maps
-                        if (child.material.metalnessMap) {
-                            child.material.metalnessMap.anisotropy = maxAnisotropy;
-                            child.material.metalnessMap.generateMipmaps = true;
-                            child.material.metalnessMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.metalnessMap.magFilter = THREE.LinearFilter;
-                        }
-
-                        // Enhance ambient occlusion maps
-                        if (child.material.aoMap) {
-                            child.material.aoMap.anisotropy = maxAnisotropy;
-                            child.material.aoMap.generateMipmaps = true;
-                            child.material.aoMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.aoMap.magFilter = THREE.LinearFilter;
-                            child.material.aoMapIntensity = 1.0;
-                        }
-
-                        // Enhance emissive maps
-                        if (child.material.emissiveMap) {
-                            child.material.emissiveMap.anisotropy = maxAnisotropy;
-                            child.material.emissiveMap.generateMipmaps = true;
-                            child.material.emissiveMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.emissiveMap.magFilter = THREE.LinearFilter;
-                        }
-
-                        // Enhance displacement maps
-                        if (child.material.displacementMap) {
-                            child.material.displacementMap.anisotropy = maxAnisotropy;
-                            child.material.displacementMap.generateMipmaps = true;
-                            child.material.displacementMap.minFilter = THREE.LinearMipmapLinearFilter;
-                            child.material.displacementMap.magFilter = THREE.LinearFilter;
+                            child.material.normalMap.anisotropy = anisotropy;
                         }
                     }
                 }
@@ -276,64 +187,40 @@ function onBusinessCardResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
 
-    // Maintain maximum quality on resize
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 4);
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(pixelRatio);
-
-    // 2.5x resolution for maximum quality
-    const renderWidth = container.offsetWidth * 2.5;
-    const renderHeight = container.offsetHeight * 2.5;
-    renderer.setSize(renderWidth, renderHeight, false);
-    canvas.style.width = container.offsetWidth + 'px';
-    canvas.style.height = container.offsetHeight + 'px';
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 
 let animationFrame = 0;
-let needsShadowUpdate = true;
 
 function animateBusinessCard() {
     requestAnimationFrame(animateBusinessCard);
 
-    // Update controls
     if (controls) controls.update();
 
-    // Optimized animations - update less frequently
+    // Ottimizzazione: aggiorna luci ogni 3 frame
     animationFrame++;
-    const time = Date.now() * 0.001;
-    const slowTime = time * 0.5;
+    if (animationFrame % 3 === 0) {
+        const time = Date.now() * 0.001;
 
-    // Update lighting every 2 frames for better performance
-    if (animationFrame % 2 === 0) {
-        // Smooth accent light animations
         if (accentLight1) {
             accentLight1.intensity = 0.8 + Math.sin(time * 1.2) * 0.4;
-            accentLight1.position.x = 2 + Math.sin(time * 0.8) * 0.5; // Reduced movement
         }
         if (accentLight2) {
             accentLight2.intensity = 0.6 + Math.cos(time * 1.5) * 0.3;
-            accentLight2.position.z = 2 + Math.cos(time * 0.7) * 0.4; // Reduced movement
         }
-
-        // Update point lights less frequently
         if (pointLight1) {
-            pointLight1.intensity = 1.8 + Math.sin(slowTime * 1.3) * 0.4; // Reduced variation
+            pointLight1.intensity = 1.8 + Math.sin(time * 0.65) * 0.4;
         }
         if (pointLight2) {
-            pointLight2.intensity = 1.2 + Math.cos(slowTime * 1.1) * 0.3; // Reduced variation
+            pointLight2.intensity = 1.2 + Math.cos(time * 0.55) * 0.3;
         }
-
-        // Subtle rim light animation
         if (rimLight1) {
-            rimLight1.intensity = 1.6 + Math.sin(time * 0.3) * 0.2; // Slower, less variation
+            rimLight1.intensity = 1.6 + Math.sin(time * 0.3) * 0.2;
         }
         if (rimLight2) {
-            rimLight2.intensity = 1.0 + Math.cos(time * 0.25) * 0.2; // Slower, less variation
-        }
-
-        // Update shadows for maximum quality
-        if (needsShadowUpdate && animationFrame % 5 === 0) {
-            renderer.shadowMap.needsUpdate = true;
-            needsShadowUpdate = false;
+            rimLight2.intensity = 1.0 + Math.cos(time * 0.25) * 0.2;
         }
     }
 
