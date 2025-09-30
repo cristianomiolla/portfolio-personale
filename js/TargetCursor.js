@@ -166,7 +166,19 @@ class TargetCursor {
   }
 
   setupEventListeners() {
-    const moveHandler = (e) => this.moveCursor(e.clientX, e.clientY);
+    const moveHandler = (e) => {
+      // Nascondi il cursore custom quando si è sul canvas
+      if (e.target.id === 'drawingCanvas' || e.target.closest('.canvas-wrapper')) {
+        if (this.cursorRef) {
+          this.cursorRef.style.opacity = '0';
+        }
+      } else {
+        if (this.cursorRef) {
+          this.cursorRef.style.opacity = '1';
+        }
+        this.moveCursor(e.clientX, e.clientY);
+      }
+    };
     window.addEventListener('mousemove', moveHandler);
 
     const scrollHandler = () => {
