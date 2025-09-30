@@ -239,31 +239,6 @@ body {
     background-color: #ffffff;
     border: 3px solid #000000;
     overflow: hidden;
-    transition: transform 0.2s ease;
-}
-
-/* Hover per desktop */
-@media (min-width: 769px) {
-    .project-card:hover {
-        transform: translateY(-12px);
-        background-color: #f8f8f8;
-    }
-}
-
-/* Disattiva hover su mobile */
-@media (max-width: 768px) {
-    .project-card:hover {
-        transform: none;
-        background-color: #ffffff;
-    }
-
-    .project-card:hover .project-overlay {
-        opacity: 0;
-    }
-
-    .project-card:hover .project-image img {
-        transform: none;
-    }
 }
 
 .project-image {
@@ -294,9 +269,10 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.project-card:hover .project-overlay {
+.project-image:hover .project-overlay {
     opacity: 1;
 }
+
 
 
 .project-link {
@@ -314,13 +290,9 @@ body {
     clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
 }
 
-.project-link:hover {
-    background-color: #333333;
-    transform: scale(1.05);
-}
 
 .project-content {
-    padding: 26px;
+    padding: 20px 26px;
     background: #ffffff;
 }
 
@@ -555,10 +527,6 @@ body {
     clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
 }
 
-.business-card .card-cv-link:hover {
-    background: #333333;
-    transform: scale(1.05);
-}
 
 
 
@@ -646,7 +614,7 @@ body {
     font-size: 1rem;
     font-weight: 700;
     margin: 0;
-    padding: 16px 60px 16px 26px;
+    padding: 16px 26px 16px 26px;
     color: #000000;
     background: #ffffff;
     letter-spacing: 0.02em;
@@ -655,26 +623,12 @@ body {
     border-bottom: 3px solid #000000;
 }
 
-.competenza-title::after {
-    content: '';
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
-    border: 3px solid #000000;
-    clip-path: polygon(
-        0% 0%, 30% 0%, 30% 30%, 100% 30%, 100% 0%, 100% 100%,
-        70% 100%, 70% 70%, 0% 70%, 0% 100%
-    );
-}
 
 .tag-container {
     display: flex;
     flex-wrap: wrap;
     gap: 0;
-    padding: 26px;
+    padding: 16px 26px;
 }
 
 .tag {
@@ -698,10 +652,6 @@ a.tag {
     cursor: pointer;
 }
 
-.tag:hover {
-    background-color: #333333;
-    transform: scale(1.05);
-}
 
 /* ===== BUSINESS CARD RESPONSIVE ===== */
 @media (max-width: 768px) {
@@ -716,11 +666,7 @@ a.tag {
     }
 
     .competenza-title {
-        padding-left: 20px;
-    }
-
-    .competenza-title::after {
-        right: 16px;
+        padding: 16px 20px;
     }
 
     .tag-container {
