@@ -18,7 +18,7 @@ const observer = new IntersectionObserver((entries) => {
 // ===== INIZIALIZZAZIONE AL CARICAMENTO =====
 document.addEventListener('DOMContentLoaded', function() {
     // Applica animazioni fade-in a sezioni e card
-    const animatedElements = document.querySelectorAll('.business-card-section, .portfolio, .project-card');
+    const animatedElements = document.querySelectorAll('.business-card-section');
 
     animatedElements.forEach((el, index) => {
         el.style.opacity = '0';
