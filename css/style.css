@@ -59,7 +59,7 @@ body {
 .shape {
     position: absolute;
     background-color: #000000;
-    opacity: 0.04;
+    opacity: 0.05;
     transition: transform 0.1s ease-out;
 }
 
