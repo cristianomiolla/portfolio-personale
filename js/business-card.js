@@ -23,9 +23,8 @@ function initBusinessCard() {
         powerPreference: "high-performance"
     });
 
-    // DPI support ottimizzato
-    const pixelRatio = window.devicePixelRatio || 1;
-    renderer.setPixelRatio(pixelRatio);
+    // DPI support per massima qualità su tutti i dispositivi
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 1);
 
@@ -42,12 +41,12 @@ function initBusinessCard() {
     const ambientLight = new THREE.AmbientLight(0x2c3e50, 0.08); // Reduced ambient for deeper shadows
     scene.add(ambientLight);
 
-    // Main key light con shadow ottimizzate
+    // Main key light con shadow ottimizzate - maggiore risoluzione su mobile
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.5);
     keyLight.position.set(6, 10, 8);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
     keyLight.shadow.camera.near = 0.1;
     keyLight.shadow.camera.far = 100;
     keyLight.shadow.camera.left = -15;
@@ -122,11 +121,13 @@ function initBusinessCard() {
                             child.material.metalness = child.material.metalness || 0.1;
                         }
 
-                        // Anisotropic filtering ottimizzato
-                        const anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 4);
+                        // Anisotropic filtering massimo per qualità superiore
+                        const anisotropy = renderer.capabilities.getMaxAnisotropy();
 
                         if (child.material.map) {
                             child.material.map.anisotropy = anisotropy;
+                            child.material.map.minFilter = THREE.LinearMipMapLinearFilter;
+                            child.material.map.magFilter = THREE.LinearFilter;
                         }
                         if (child.material.normalMap) {
                             child.material.normalMap.anisotropy = anisotropy;
@@ -187,8 +188,7 @@ function onBusinessCardResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
 
-    const pixelRatio = window.devicePixelRatio || 1;
-    renderer.setPixelRatio(pixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 
