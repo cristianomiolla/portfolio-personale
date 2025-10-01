@@ -297,11 +297,12 @@ body {
 }
 
 .project-title {
-    font-size: 19.2px;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 700;
     margin-bottom: 12px;
     color: #000000;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .project-description {
@@ -375,6 +376,7 @@ body {
 
 .business-card .left-section {
     width: 35%;
+    flex-shrink: 0;
     background: #000;
     display: flex;
     align-items: center;
@@ -683,6 +685,10 @@ a.tag {
         height: calc((100vw - 32px) * 55mm / 85mm);
         transform: scale(1);
         margin: 32px auto 0 auto;
+    }
+
+    .business-card .left-section {
+        clip-path: none;
     }
 
     .business-card .name {
