@@ -37,6 +37,10 @@ body {
     overflow-x: hidden;
 }
 
+* {
+    cursor: none !important;
+}
+
 /* ===== CONTAINER E LAYOUT ===== */
 .container {
     max-width: 1200px;
@@ -682,6 +686,7 @@ a.tag {
     .business-card {
         width: calc(100vw - 32px);
         height: calc((100vw - 32px) * 55mm / 85mm);
+        max-height: 260px;
         transform: scale(1);
         margin: 32px auto 0 auto;
     }
@@ -780,7 +785,7 @@ a.tag {
     }
 
     .business-card .card-contact-item {
-        font-size: 12px;
+        font-size: 11px;
         margin-bottom: 6px;
         letter-spacing: 0.8px;
         gap: 6px;

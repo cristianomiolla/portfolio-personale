@@ -1,6 +1,7 @@
 /* Sezione Lavagna Collaborativa - Stile Brutalista */
 .collaborative-canvas {
     padding: 80px 0;
+    position: relative;
 }
 
 .canvas-description {
@@ -137,10 +138,11 @@
     max-width: 900px;
     margin: 0 auto;
     border: 3px solid #000000;
-    overflow: hidden;
+    overflow: visible;
     background: #ffffff;
     position: relative;
     aspect-ratio: 3 / 2;
+    margin-bottom: 0;
 }
 
 #drawingCanvas {
@@ -149,6 +151,111 @@
     height: 100%;
     cursor: crosshair;
     touch-action: none;
+}
+
+/* Gambe della lavagna - Stile Brutalista Geometrico Design */
+.canvas-legs {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.canvas-leg {
+    position: absolute;
+    top: 0;
+    width: 60px;
+    height: 100%;
+    background: #000000;
+    border: 3px solid #000000;
+    border-top: none;
+    box-sizing: border-box;
+}
+
+.canvas-leg-left {
+    left: 18%;
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        98% 10%,
+        96% 20%,
+        94% 30%,
+        92% 40%,
+        90% 50%,
+        88% 60%,
+        86% 70%,
+        84% 80%,
+        82% 90%,
+        80% 100%,
+        20% 100%,
+        18% 90%,
+        16% 80%,
+        14% 70%,
+        12% 60%,
+        10% 50%,
+        8% 40%,
+        6% 30%,
+        4% 20%,
+        2% 10%
+    );
+}
+
+.canvas-leg-right {
+    right: 18%;
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        98% 10%,
+        96% 20%,
+        94% 30%,
+        92% 40%,
+        90% 50%,
+        88% 60%,
+        86% 70%,
+        84% 80%,
+        82% 90%,
+        80% 100%,
+        20% 100%,
+        18% 90%,
+        16% 80%,
+        14% 70%,
+        12% 60%,
+        10% 50%,
+        8% 40%,
+        6% 30%,
+        4% 20%,
+        2% 10%
+    );
+}
+
+/* Dettagli geometrici sulle gambe - Design brutalista */
+.canvas-leg::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.canvas-leg::after {
+    content: '';
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    clip-path: polygon(
+        30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%
+    );
 }
 
 /* Responsive */
@@ -185,6 +292,34 @@
 
     .canvas-wrapper {
         border: 3px solid #000000;
+    }
+
+    .canvas-legs {
+        height: 80px;
+    }
+
+    .canvas-leg {
+        width: 40px;
+    }
+
+    .canvas-leg-left {
+        left: 15%;
+    }
+
+    .canvas-leg-right {
+        right: 15%;
+    }
+
+    .canvas-leg::before {
+        width: 16px;
+        height: 16px;
+        top: 30%;
+    }
+
+    .canvas-leg::after {
+        width: 12px;
+        height: 12px;
+        top: 65%;
     }
 
     .brush-size {
