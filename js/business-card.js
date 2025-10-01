@@ -8,6 +8,16 @@ function initBusinessCard() {
 
     const container = canvas.parentElement;
 
+    // Debug logging for iPhone 11 Pro investigation
+    console.log('Device info:', {
+        devicePixelRatio: window.devicePixelRatio,
+        containerWidth: container.offsetWidth,
+        containerHeight: container.offsetHeight,
+        aspectRatio: container.offsetWidth / container.offsetHeight,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight
+    });
+
     // Scene setup
     scene = new THREE.Scene();
 
