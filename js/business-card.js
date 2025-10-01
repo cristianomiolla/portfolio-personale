@@ -8,13 +8,22 @@ function initBusinessCard() {
 
     const container = canvas.parentElement;
 
+    // Debug logging for iPhone 11 Pro investigation
+    console.log('Device info:', {
+        devicePixelRatio: window.devicePixelRatio,
+        containerWidth: container.offsetWidth,
+        containerHeight: container.offsetHeight,
+        aspectRatio: container.offsetWidth / container.offsetHeight,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight
+    });
+
     // Scene setup
     scene = new THREE.Scene();
 
-    // Camera setup with aspect ratio fix
-    const aspect = container.offsetWidth / container.offsetHeight;
-    camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
-    camera.position.set(0, 0.8, 3);
+    // Camera setup
+    camera = new THREE.PerspectiveCamera(50, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+    camera.position.set(0, 0.8, 3); // Camera positioned for balanced front view
 
     // Renderer setup - Ottimizzato per performance
     renderer = new THREE.WebGLRenderer({
@@ -24,9 +33,8 @@ function initBusinessCard() {
         powerPreference: "high-performance"
     });
 
-    // Limit pixel ratio to max 2 to prevent oversizing on high-DPI devices like iPhone 11 Pro
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    renderer.setPixelRatio(pixelRatio);
+    // DPI support per massima qualità su tutti i dispositivi
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 1);
 
@@ -190,9 +198,7 @@ function onBusinessCardResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
 
-    // Limit pixel ratio to max 2 on resize as well
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    renderer.setPixelRatio(pixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 
