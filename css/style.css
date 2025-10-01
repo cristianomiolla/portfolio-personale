@@ -688,7 +688,7 @@ a.tag {
 
     .business-card .left-section {
         height: 100%;
-        max-height: 270px;
+        max-height: 100%;
     }
 
     .business-card #model-canvas {
