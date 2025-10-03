@@ -189,8 +189,8 @@
 /* Responsive */
 @media (max-width: 768px) {
     .like-container {
-        margin-top: 25px;
         gap: 12px;
+        margin-top: 25px;
     }
 
     .like-button {
@@ -206,28 +206,6 @@
 
     .like-count {
         font-size: 24px;
-    }
-}
-
-@media (max-width: 480px) {
-    .like-container {
-        margin-top: 20px;
-        gap: 10px;
-    }
-
-    .like-button {
-        width: 40px;
-        height: 40px;
-        padding: 8px;
-    }
-
-    .heart-icon {
-        width: 18px;
-        height: 18px;
-    }
-
-    .like-count {
-        font-size: 22px;
     }
 }
 
