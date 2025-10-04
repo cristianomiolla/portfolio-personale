@@ -93,13 +93,21 @@ class LikeSystem {
 
             this.isLiked = !!data;
 
-            this.updateUI(true); // true = skip animation on initial load
+            // Imposta il counter a 0 inizialmente per evitare il flash del numero
+            this.likeCount.textContent = '0';
+
+            // Aggiorna solo lo stato del button, non il counter
+            if (this.isLiked) {
+                this.likeButton.classList.add('liked');
+                this.likeButton.setAttribute('aria-pressed', 'true');
+            }
         } catch (error) {
             // Se l'errore è "no rows", è normale (nessun like da questo device)
             if (error.code !== 'PGRST116') {
                 console.error('Errore caricamento like state:', error);
             }
-            this.updateUI(true); // true = skip animation on initial load
+            // Imposta il counter a 0 anche in caso di errore
+            this.likeCount.textContent = '0';
         }
     }
 
