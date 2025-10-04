@@ -15,6 +15,7 @@ class LikeSystem {
         this.deviceId = null;
         this.isLiked = false;
         this.totalLikes = 0;
+        this.loadingComplete = false;
 
         // Elementi DOM
         this.likeButton = null;
@@ -92,13 +93,13 @@ class LikeSystem {
 
             this.isLiked = !!data;
 
-            this.updateUI();
+            this.updateUI(true); // true = skip animation on initial load
         } catch (error) {
             // Se l'errore è "no rows", è normale (nessun like da questo device)
             if (error.code !== 'PGRST116') {
                 console.error('Errore caricamento like state:', error);
             }
-            this.updateUI();
+            this.updateUI(true); // true = skip animation on initial load
         }
     }
 
@@ -212,13 +213,19 @@ class LikeSystem {
     /**
      * Aggiorna UI
      */
-    updateUI() {
+    updateUI(skipAnimation = false) {
         // Aggiorna contatore con animazione count-up
         const currentValue = parseInt(this.likeCount.textContent) || 0;
         const targetValue = this.totalLikes;
 
         if (currentValue !== targetValue) {
-            this.animateCounter(currentValue, targetValue);
+            // Anima solo se il loading è completo e skipAnimation è false
+            if (skipAnimation || !this.loadingComplete) {
+                // Imposta valore direttamente senza animazione
+                this.likeCount.textContent = targetValue;
+            } else {
+                this.animateCounter(currentValue, targetValue);
+            }
         }
 
         // Aggiorna stato button
@@ -229,6 +236,18 @@ class LikeSystem {
             this.likeButton.classList.remove('liked');
             this.likeButton.setAttribute('aria-pressed', 'false');
         }
+    }
+
+    /**
+     * Chiamato quando il loading screen finisce
+     */
+    onLoadingComplete() {
+        this.loadingComplete = true;
+
+        // Avvia l'animazione del counter da 0 al valore attuale
+        const targetValue = this.totalLikes;
+        this.likeCount.textContent = '0';
+        this.animateCounter(0, targetValue);
     }
 
     /**

@@ -290,16 +290,6 @@
                     hideDefaultCursor: true,
                     excludeSelector: '#drawingCanvas, .canvas-wrapper'
                 });
-
-                // Show cursor after page loads
-                window.addEventListener('load', () => {
-                    setTimeout(() => {
-                        const cursorWrapper = document.querySelector('.target-cursor-wrapper');
-                        if (cursorWrapper) {
-                            cursorWrapper.classList.add('visible');
-                        }
-                    }, 500);
-                });
             }
         });
     </script>
@@ -316,6 +306,11 @@
                 // Remove the loading screen from DOM after transition
                 setTimeout(() => {
                     loadingScreen.remove();
+
+                    // Avvia animazione counter like quando il loading è completato
+                    if (window.likeSystem) {
+                        window.likeSystem.onLoadingComplete();
+                    }
                 }, 500);
             }, 500);
         });
@@ -327,8 +322,8 @@
         const LIKE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZXNtanF3cmlrb3BrbHBzcHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyMjUwMTIsImV4cCI6MjA3NDgwMTAxMn0.mDJNK27giQs9aWUeRu13OWK9SvJdNxkL8R-UIKOpYDs';
 
         window.addEventListener('DOMContentLoaded', async () => {
-            const likeSystem = new LikeSystem(LIKE_SUPABASE_URL, LIKE_SUPABASE_ANON_KEY);
-            await likeSystem.init();
+            window.likeSystem = new LikeSystem(LIKE_SUPABASE_URL, LIKE_SUPABASE_ANON_KEY);
+            await window.likeSystem.init();
         });
     </script>
 </body>
