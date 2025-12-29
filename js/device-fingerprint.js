@@ -12,20 +12,30 @@ class DeviceFingerprint {
      * Ottiene o genera l'ID del dispositivo
      */
     async getDeviceId() {
-        // Prova a recuperare da localStorage
-        let deviceId = localStorage.getItem(this.storageKey);
+        // Prova a recuperare da localStorage (con fallback se bloccato dalle politiche del browser)
+        let deviceId = null;
+        try {
+            deviceId = localStorage.getItem(this.storageKey);
+        } catch (e) {
+            // Se l'accesso a localStorage è bloccato (Tracking Prevention), usa un fallback in memoria
+            deviceId = window.__deviceFingerprintId || null;
+        }
 
         if (deviceId) {
-            return deviceId;
+            return this.sanitizeId(deviceId);
         }
 
         // Genera nuovo fingerprint
         deviceId = await this.generateFingerprint();
 
-        // Salva in localStorage
-        localStorage.setItem(this.storageKey, deviceId);
+        // Salva in localStorage (se possibile) o in fallback in memoria
+        try {
+            localStorage.setItem(this.storageKey, deviceId);
+        } catch (e) {
+            window.__deviceFingerprintId = deviceId;
+        }
 
-        return deviceId;
+        return this.sanitizeId(deviceId);
     }
 
     /**
@@ -135,6 +145,15 @@ class DeviceFingerprint {
             hash = hash & hash; // Convert to 32bit integer
         }
         return Math.abs(hash).toString(16).padStart(8, '0');
+    }
+
+    /**
+     * Sanitizza l'ID rimuovendo caratteri non sicuri per query URL
+     */
+    sanitizeId(id) {
+        if (!id) return id;
+        // Permetti solo lettere, numeri, underscore e trattini
+        return String(id).replace(/[^a-zA-Z0-9_-]/g, '-');
     }
 
     /**

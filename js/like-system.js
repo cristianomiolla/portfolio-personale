@@ -91,6 +91,10 @@ class LikeSystem {
                 .eq('device_id', this.deviceId)
                 .single();
 
+            if (error) {
+                console.warn('Errore dalla query single (potrebbe essere normale):', error);
+            }
+
             this.isLiked = !!data;
 
             // Imposta il counter a 0 inizialmente per evitare il flash del numero
@@ -103,8 +107,10 @@ class LikeSystem {
             }
         } catch (error) {
             // Se l'errore è "no rows", è normale (nessun like da questo device)
-            if (error.code !== 'PGRST116') {
+            if (error && error.code !== 'PGRST116') {
                 console.error('Errore caricamento like state:', error);
+            } else {
+                console.debug('Nessun like trovato per questo device');
             }
             // Imposta il counter a 0 anche in caso di errore
             this.likeCount.textContent = '0';
@@ -166,6 +172,7 @@ class LikeSystem {
             ]);
 
         if (error) {
+            console.error('Errore insert like:', error);
             // Se è un errore di duplicato, ignora
             if (error.code === '23505') {
                 console.log('Like già esistente');
@@ -192,7 +199,10 @@ class LikeSystem {
             .delete()
             .eq('device_id', this.deviceId);
 
-        if (error) throw error;
+        if (error) {
+            console.error('Errore delete like:', error);
+            throw error;
+        }
 
         this.isLiked = false;
 

@@ -2,8 +2,9 @@
 const SUPABASE_URL = 'https://qjesmjqwrikopklpsppt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZXNtanF3cmlrb3BrbHBzcHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyMjUwMTIsImV4cCI6MjA3NDgwMTAxMn0.mDJNK27giQs9aWUeRu13OWK9SvJdNxkL8R-UIKOpYDs';
 
-// Inizializza Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Inizializza Supabase client (usa nome non in conflitto e memorizza su window)
+const supabaseClient = window.supabaseClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabaseClient = supabaseClient;
 
 class CollaborativeCanvas {
     constructor() {
@@ -27,40 +28,69 @@ class CollaborativeCanvas {
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
 
-        // Event listeners per disegno
-        this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
-        this.canvas.addEventListener('mousemove', (e) => this.draw(e));
-        this.canvas.addEventListener('mouseup', () => this.stopDrawing());
-        this.canvas.addEventListener('mouseout', () => this.stopDrawing());
+        // Inizializza variabili per smoothing
+        this.lastMidX = 0;
+        this.lastMidY = 0;
+        this.currentPointerId = null;
 
-        // Touch events per mobile
-        this.canvas.addEventListener('touchstart', (e) => {
+        // Preferisci Pointer Events (gestisce mouse/touch/pen con pressione)
+        this.canvas.addEventListener('pointerdown', (e) => {
             e.preventDefault();
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousedown', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
+            this.startDrawing(e);
+            if (e.pointerId && this.canvas.setPointerCapture) {
+                try { this.canvas.setPointerCapture(e.pointerId); } catch (err) {}
+                this.currentPointerId = e.pointerId;
+            }
+        });
+
+        this.canvas.addEventListener('pointermove', (e) => this.draw(e));
+        this.canvas.addEventListener('pointerup', (e) => {
+            this.stopDrawing();
+            if (e.pointerId && this.canvas.releasePointerCapture) {
+                try { this.canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+                this.currentPointerId = null;
+            }
+        });
+        this.canvas.addEventListener('pointercancel', () => this.stopDrawing());
+        this.canvas.addEventListener('pointerout', () => this.stopDrawing());
+
+        // Se il wrapper intercetta gli eventi (es. overlay o plugin), inoltra i pointer events al canvas
+        const wrapper = this.canvas.closest('.canvas-wrapper');
+        if (wrapper) {
+            wrapper.addEventListener('pointerdown', (e) => {
+                if (e.target !== this.canvas) {
+                    try {
+                        const ev = new PointerEvent('pointerdown', { clientX: e.clientX, clientY: e.clientY, pointerId: e.pointerId, pointerType: e.pointerType });
+                        this.canvas.dispatchEvent(ev);
+                    } catch (err) {
+                        const me = new MouseEvent('mousedown', { clientX: e.clientX, clientY: e.clientY });
+                        this.canvas.dispatchEvent(me);
+                    }
+                }
             });
-            this.canvas.dispatchEvent(mouseEvent);
-        });
-
-        this.canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
+            wrapper.addEventListener('pointermove', (e) => {
+                if (e.pressure !== 0) {
+                    try {
+                        const ev = new PointerEvent('pointermove', { clientX: e.clientX, clientY: e.clientY, pointerId: e.pointerId, pointerType: e.pointerType, pressure: e.pressure });
+                        this.canvas.dispatchEvent(ev);
+                    } catch (err) {
+                        const me = new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY });
+                        this.canvas.dispatchEvent(me);
+                    }
+                }
             });
-            this.canvas.dispatchEvent(mouseEvent);
-        });
+            wrapper.addEventListener('pointerup', (e) => {
+                try {
+                    const ev = new PointerEvent('pointerup', { clientX: e.clientX, clientY: e.clientY });
+                    this.canvas.dispatchEvent(ev);
+                } catch (err) {
+                    const me = new MouseEvent('mouseup', {});
+                    this.canvas.dispatchEvent(me);
+                }
+            });
+        }
 
-        this.canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            const mouseEvent = new MouseEvent('mouseup', {});
-            this.canvas.dispatchEvent(mouseEvent);
-        });
-
-        // Configura stile canvas per alta qualità
+        // Configura stile canvas per alta qualità e angoli stondati
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.imageSmoothingEnabled = true;
@@ -79,8 +109,8 @@ class CollaborativeCanvas {
         this.canvas.style.width = rect.width + 'px';
         this.canvas.style.height = rect.height + 'px';
 
-        // Scala il contesto per compensare il DPR
-        this.ctx.scale(dpr, dpr);
+        // Reset del transform e scala il contesto per compensare il DPR (evita accumulo di scale su resize)
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         // Configura stile per alta qualità
         this.ctx.lineCap = 'round';
@@ -123,7 +153,7 @@ class CollaborativeCanvas {
         await this.loadAllStrokes();
 
         // Iscriviti agli aggiornamenti in tempo reale
-        supabase
+        supabaseClient
             .channel('canvas_changes')
             .on('postgres_changes',
                 { event: 'INSERT', schema: 'public', table: 'canvas_strokes' },
@@ -144,7 +174,7 @@ class CollaborativeCanvas {
 
     async loadAllStrokes() {
         try {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('canvas_strokes')
                 .select('*')
                 .order('created_at', { ascending: true });
@@ -178,36 +208,44 @@ class CollaborativeCanvas {
         const coords = this.getCanvasCoordinates(e);
         this.lastX = coords.x;
         this.lastY = coords.y;
+        this.lastMidX = this.lastX;
+        this.lastMidY = this.lastY;
+
+        // Se è un PointerEvent, cattura il puntatore
+        if (e && e.pointerId && this.canvas.setPointerCapture) {
+            try { this.canvas.setPointerCapture(e.pointerId); } catch (err) {}
+            this.currentPointerId = e.pointerId;
+        }
     }
 
     draw(e) {
         if (!this.isDrawing) return;
 
         const coords = this.getCanvasCoordinates(e);
-        const x1 = coords.x;
-        const y1 = coords.y;
+        const x = coords.x;
+        const y = coords.y;
 
-        // Disegna localmente immediatamente
+        const dpr = window.devicePixelRatio || 1;
+        const effectiveLineWidth = this.currentWidth * dpr;
+
+        // Calcola punto medio per smoothing (midpoint quadratic)
+        const midX = (this.lastX + x) / 2;
+        const midY = (this.lastY + y) / 2;
+
         this.ctx.strokeStyle = this.currentColor;
-        this.ctx.lineWidth = this.currentWidth;
+        this.ctx.lineWidth = effectiveLineWidth;
         this.ctx.beginPath();
-        this.ctx.moveTo(this.lastX, this.lastY);
-        this.ctx.lineTo(x1, y1);
+        this.ctx.moveTo(this.lastMidX, this.lastMidY);
+        this.ctx.quadraticCurveTo(this.lastX, this.lastY, midX, midY);
         this.ctx.stroke();
 
         // Normalizza coordinate per salvare nel database (0-1) rispetto alle dimensioni CSS
         const rect = this.canvas.getBoundingClientRect();
-        const normalizedX0 = this.lastX / rect.width;
-        const normalizedY0 = this.lastY / rect.height;
-        const normalizedX1 = x1 / rect.width;
-        const normalizedY1 = y1 / rect.height;
-
-        // Aggiungi al buffer per salvataggio batch
         this.pendingStrokes.push({
-            x0: normalizedX0,
-            y0: normalizedY0,
-            x1: normalizedX1,
-            y1: normalizedY1,
+            x0: this.lastX / rect.width,
+            y0: this.lastY / rect.height,
+            x1: x / rect.width,
+            y1: y / rect.height,
             color: this.currentColor,
             width: this.currentWidth
         });
@@ -217,8 +255,11 @@ class CollaborativeCanvas {
             this.saveStrokesBatch();
         }
 
-        this.lastX = x1;
-        this.lastY = y1;
+        // Aggiorna punti di riferimento
+        this.lastX = x;
+        this.lastY = y;
+        this.lastMidX = midX;
+        this.lastMidY = midY;
     }
 
     async saveStrokesBatch() {
@@ -229,7 +270,7 @@ class CollaborativeCanvas {
         this.pendingStrokes = [];
 
         try {
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from('canvas_strokes')
                 .insert(strokesToSave);
 
@@ -250,6 +291,10 @@ class CollaborativeCanvas {
 
     stopDrawing() {
         this.isDrawing = false;
+        if (this.currentPointerId && this.canvas.releasePointerCapture) {
+            try { this.canvas.releasePointerCapture(this.currentPointerId); } catch (err) {}
+            this.currentPointerId = null;
+        }
     }
 
     drawStroke(stroke) {
@@ -263,7 +308,7 @@ class CollaborativeCanvas {
         const y1 = stroke.y1 * rect.height;
 
         this.ctx.strokeStyle = stroke.color;
-        this.ctx.lineWidth = stroke.width;
+        this.ctx.lineWidth = (stroke.width || this.currentWidth) * dpr;
         this.ctx.beginPath();
         this.ctx.moveTo(x0, y0);
         this.ctx.lineTo(x1, y1);
@@ -277,7 +322,7 @@ class CollaborativeCanvas {
     async clearCanvas() {
         try {
             // Elimina tutti i record dal database
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from('canvas_strokes')
                 .delete()
                 .neq('id', 0); // Elimina tutto

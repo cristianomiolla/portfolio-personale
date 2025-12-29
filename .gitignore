@@ -1,0 +1,12 @@
+# Node
+node_modules/
+
+# Local settings
+.claude/
+*.local.json
+
+# Build / misc
+offbit/
+.DS_Store
+.vscode/
+.env
