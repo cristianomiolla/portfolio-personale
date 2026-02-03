@@ -202,6 +202,16 @@ body {
     transform: scale(1.05);
 }
 
+.hero .name {
+    font-family: 'Handjet', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+    transform: scaleY(0.75);
+    transform-origin: center;
+}
+
 .name {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 600;
@@ -220,11 +230,13 @@ body {
 
 /* ===== SEZIONI ===== */
 .section-title {
-    font-size: 2.5rem;
+    font-family: 'Handjet', sans-serif;
+    font-size: 3.5rem;
     font-weight: 500;
     text-align: center;
     margin-bottom: 48px;
     letter-spacing: -0.01em;
+    transform: scaleY(0.75);
 }
 
 
@@ -301,12 +313,15 @@ body {
 }
 
 .project-title {
-    font-size: 1rem;
+    font-family: 'Handjet', sans-serif;
+    font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 12px;
     color: #000000;
     text-transform: uppercase;
     letter-spacing: 0.02em;
+    transform: scaleY(0.75);
+    transform-origin: left;
 }
 
 .project-description {
@@ -342,7 +357,7 @@ body {
     }
 
     .section-title {
-        font-size: 1.8rem;
+        font-size: 2.4rem;
         margin-bottom: 32px;
     }
 
@@ -616,7 +631,8 @@ body {
 }
 
 .competenza-title {
-    font-size: 1rem;
+    font-family: 'Handjet', sans-serif;
+    font-size: 1.6rem;
     font-weight: 700;
     margin: 0;
     padding: 16px 26px 16px 26px;
@@ -626,6 +642,8 @@ body {
     text-transform: uppercase;
     position: relative;
     border-bottom: 3px solid #000000;
+    transform: scaleY(0.75);
+    transform-origin: left;
 }
 
 
