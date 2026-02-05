@@ -16,6 +16,7 @@ class LikeSystem {
         this.isLiked = false;
         this.totalLikes = 0;
         this.loadingComplete = false;
+        this.initComplete = false;
 
         // Elementi DOM
         this.likeButton = null;
@@ -42,11 +43,19 @@ class LikeSystem {
             // Carica stato iniziale
             await this.loadLikeState();
 
+            // Marca che l'inizializzazione è completa
+            this.initComplete = true;
+
             // Aggiungi event listener
             this.likeButton.addEventListener('click', () => this.toggleLike());
 
             // Abilita real-time sync per vedere like da altri dispositivi
             this.enableRealtimeSync();
+
+            // Se il loading screen è già stato rimosso, avvia subito l'animazione
+            if (this.loadingComplete && this.totalLikes > 0) {
+                this.animateCounter(0, this.totalLikes);
+            }
         } catch (error) {
             console.error('Errore inizializzazione like system:', error);
             this.showError();
@@ -262,10 +271,15 @@ class LikeSystem {
     onLoadingComplete() {
         this.loadingComplete = true;
 
-        // Avvia l'animazione del counter da 0 al valore attuale
-        const targetValue = this.totalLikes;
-        this.likeCount.textContent = '0';
-        this.animateCounter(0, targetValue);
+        // Avvia l'animazione solo se l'init è completo e abbiamo un valore valido
+        if (this.initComplete && this.totalLikes > 0) {
+            this.likeCount.textContent = '0';
+            this.animateCounter(0, this.totalLikes);
+        } else if (this.initComplete) {
+            // Init completo ma 0 likes - mostra 0 direttamente
+            this.likeCount.textContent = '0';
+        }
+        // Se init non è completo, l'animazione verrà avviata da init()
     }
 
     /**
