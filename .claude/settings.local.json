@@ -12,7 +12,22 @@
       "Bash(ren:*)",
       "Bash(git push:*)",
       "WebSearch",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "WebFetch(domain:dev.to)",
+      "Bash(del \"C:\\Users\\crist\\Desktop\\personal sito\\css\\falling-text.css\")",
+      "WebFetch(domain:reactbits.dev)",
+      "Bash(if exist \"C:\\Users\\crist\\Desktop\\personal sito\\js\\falling-text.js\" del \"C:\\Users\\crist\\Desktop\\personal sito\\js\\falling-text.js\")",
+      "Bash(if exist \"C:\\Users\\crist\\Desktop\\personal sito\\css\\falling-text.css\" del \"C:\\Users\\crist\\Desktop\\personal sito\\css\\falling-text.css\")",
+      "Bash(npm uninstall:*)",
+      "Bash(del jsfalling-text.js)",
+      "Bash(del cssfalling-text.css)",
+      "Bash(npm install:*)",
+      "Bash(where supabase)",
+      "Bash(git revert:*)",
+      "Bash(ipconfig)",
+      "Bash(dir:*)",
+      "Bash(git checkout:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []
